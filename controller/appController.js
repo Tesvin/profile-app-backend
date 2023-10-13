@@ -18,6 +18,7 @@ export async function verifyUser(req, res, next){
         next();
 
     } catch (error) {
+        controller.abort();
         return res.status(404).send({ error: "Authentication Error"});
     }
 }
@@ -96,6 +97,7 @@ export async function register(req,res){
                         })
                 }
             }).catch(error => {
+                controller.abort();
                 return res.status(500).send({ error : "User Already Exist"})
             })
 
@@ -141,14 +143,17 @@ export async function login(req, res){
 
                 })
                 .catch(error => {
+                    controller.abort();
                     return res.status(400).send({ error: "Password does not Match" })
                 })
             })
             .catch( error => {
+                controller.abort();
                 return res.status(404).send({ error : "Username not found" })
             } )
         
     } catch (error) {
+        controller.abort();
         return res.status(500).send({ error });
     }
 }
@@ -175,6 +180,7 @@ export async function getUser(req, res){
         })
         
     } catch (error) {
+        controller.abort();
         return res.status(404).send({ error : "Cannot Find User Data" })
     }
 
@@ -213,6 +219,7 @@ export async function updateUser(req,res){
         }
 
     } catch (error) {
+        controller.abort();
         return res.status(401).send({ error });
     }
 }
@@ -271,20 +278,24 @@ export async function resetPassword(req,res){
                             });
                         })
                         .catch( e => {
+                            controller.abort();
                             return res.status(500).send({
                                 error : "Enable to hashed password"
                             })
                         })
                 })
                 .catch(error => {
+                    controller.abort();
                     return res.status(404).send({ error : "Username not Found"});
                 })
 
         } catch (error) {
+            controller.abort();
             return res.status(500).send({ error })
         }
 
     } catch (error) {
+        controller.abort();
         return res.status(401).send({ error })
     }
 }
